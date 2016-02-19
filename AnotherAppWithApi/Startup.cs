@@ -1,6 +1,8 @@
 ﻿using System.Web.Http;
 using IdentityServer3.AccessTokenValidation;
 using Microsoft.Owin;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OpenIdConnect;
 using Owin;
 
 [assembly: OwinStartup(typeof(AnotherAppWithApi.Startup))]
@@ -16,6 +18,20 @@ namespace AnotherAppWithApi
             {
                 Authority = "http://appwithformsauth.localtest.me/identity",
                 RequiredScopes = new[] { "reporting_api" }
+            });
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = "Cookies"
+            });
+            app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
+            {
+                Authority = "http://appwithformsauth.localtest.me/identity",
+                ClientId = "reporting_with_login",
+                RedirectUri = "http://anotherapp.localtest.me/",
+                ResponseType = "id_token",
+                Scope = "openid",
+                SignInAsAuthenticationType = "Cookies"
             });
 
             // configure web api

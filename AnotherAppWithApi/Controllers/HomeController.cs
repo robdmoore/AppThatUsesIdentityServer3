@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Security.Claims;
+using System.Web.Mvc;
 
 namespace AnotherAppWithApi.Controllers
 {
@@ -7,6 +8,12 @@ namespace AnotherAppWithApi.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        [Authorize]
+        public ActionResult AuthenticatedPage()
+        {
+            return View((User as ClaimsPrincipal).Claims);
         }
     }
 }

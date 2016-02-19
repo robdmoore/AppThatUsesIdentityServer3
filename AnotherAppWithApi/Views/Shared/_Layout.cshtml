@@ -20,7 +20,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Home", "Index", "Home", new {area = ""}, null)</li>
+                    <li>@Html.ActionLink("Authenticated page", "AuthenticatedPage", "Home", new { area = "" })</li>
                 </ul>
             </div>
         </div>
