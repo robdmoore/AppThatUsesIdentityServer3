@@ -4,20 +4,28 @@
     angular.module("app", [])
         .controller("ExampleController", ExampleController);
 
-    function ExampleController($http, $scope) {
+    function ExampleController($http, $httpParamSerializer, $scope) {
         $http({
             url: "http://appwithformsauth.localtest.me/identity/connect/token",
             method: "POST",
-            data: {
+            data: $httpParamSerializer({
                 grant_type: "client_credentials",
                 scope: "reporting_api"
-            },
+            }),
             headers: {
-                "Authorization": "Basic cmVwb3J0aW5nOkY2MjFGNDcwLTk3MzEtNEEyNS04MEVGLTY3QTZGN0M1RjRCOA=="
+                "Authorization": "Basic cmVwb3J0aW5nOkY2MjFGNDcwLTk3MzEtNEEyNS04MEVGLTY3QTZGN0M1RjRCOA==",
+                "Accept": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded"
             }
         }).then(function (token) {
             console.log(token);
-            $http.get("/test").then(function (x) {
+            $http({
+                url: "/test",
+                method: "GET",
+                headers: {
+                    "Authorization": token.data.token_type + " " + token.data.access_token
+                }
+            }).then(function (x) {
                 $scope.result = x;
             }, function (x) {
                 console.log(arguments);
