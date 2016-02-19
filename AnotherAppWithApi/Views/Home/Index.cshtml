@@ -1,5 +1,34 @@
-﻿
-@section Scripts{
-    @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/app")
-}
+﻿<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+
+<script type="text/javascript">
+    angular.module("app", [])
+        .controller("ExampleController", ExampleController);
+
+    function ExampleController($http, $scope) {
+        $http({
+            url: "http://appwithformsauth.localtest.me/identity/connect/token",
+            method: "POST",
+            data: {
+                grant_type: "client_credentials",
+                scope: "reporting_api"
+            },
+            headers: {
+                "Authorization": "Basic cmVwb3J0aW5nOkY2MjFGNDcwLTk3MzEtNEEyNS04MEVGLTY3QTZGN0M1RjRCOA=="
+            }
+        }).then(function (token) {
+            console.log(token);
+            $http.get("/test").then(function (x) {
+                $scope.result = x;
+            }, function (x) {
+                console.log(arguments);
+            });
+        }, function() {
+            console.log(arguments);
+        });
+    }
+</script>
+
+<div ng-app="app">
+    <div ng-controller="ExampleController">{{x}}</div>
+</div>
+
