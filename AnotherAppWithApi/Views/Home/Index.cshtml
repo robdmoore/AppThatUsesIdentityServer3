@@ -9,12 +9,14 @@
             url: "http://appwithformsauth.localtest.me/identity/connect/token",
             method: "POST",
             data: $httpParamSerializer({
-                grant_type: "client_credentials",
-                scope: "reporting_api"
+                grant_type: "password",
+                scope: "reporting_api offline_access",
+                username: "username",
+                password: "password"
             }),
             headers: {
-                "Authorization": "Basic " + btoa("reporting:F621F470-9731-4A25-80EF-67A6F7C5F4B8"),
                 "Accept": "application/json",
+                "Authorization": "Basic " + btoa("reporting_with_password:F621F470-9731-4A25-80EF-67A6F7C5F4B8"),
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         }).then(function (token) {
